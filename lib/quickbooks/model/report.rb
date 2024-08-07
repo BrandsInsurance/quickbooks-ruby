@@ -4,24 +4,36 @@ module Quickbooks
 
       attr_accessor :json
 
-      attr_reader :headers
       attr_reader :columns
+      attr_reader :errors
+      attr_reader :headers
+      attr_reader :response_attributes
       attr_reader :rows
 
       def initialize(options = {})
-        self.response = options.dig(:json)
+        @json = options.dig(:json)
+        @response_attributes = {}
 
         begin
-          resp = JSON.parse(options[:json]).deep_transform_keys { |key| key.underscore.to_sym }
+          @response_attributes = JSON.parse(options[:json]).deep_transform_keys { |key| key.underscore.to_sym }
 
-          @headers = resp.fetch(:header, {})
-          @columns = resp.dig(:columns).fetch(:column, [])
-          @rows = resp.dig(:rows).fetch(:row, [])
+          @headers = @response_attributes.fetch(:header, {})
+          @columns = @response_attributes.dig(:columns).fetch(:column, [])
+          @rows = @response_attributes.dig(:rows).fetch(:row, [])
+          @errors = @response_attributes.dig(:fault).fetch(:error, [])
         rescue
           nil
         end
 
         super
+      end
+
+      def attributes
+        @response_attributes
+      end
+
+      def attribute_names
+        @response_attributes.keys
       end
 
       def all_rows
