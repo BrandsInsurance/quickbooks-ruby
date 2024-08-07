@@ -1,7 +1,7 @@
 # Docs: https://developer.intuit.com/docs/0100_accounting/0400_references/reports
 module Quickbooks
   module Service
-    class Reports < BaseService
+    class Reports < BaseServiceJSON
 
       def url_for_query(which_report = 'BalanceSheet', date_macro = 'This Fiscal Year-to-date', options = {})
         if(options == {})

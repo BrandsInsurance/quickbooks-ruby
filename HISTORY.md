@@ -1,3 +1,7 @@
+## 1.1.0 (?)
+
+* Update Reports model and server to use JSON base
+
 ## 1.0.23 (2024-02-12)
 
 Use Ruby try() to gracefully handle no method errors when parsing exceptions

@@ -1,6 +1,6 @@
 module Quickbooks
   module Model
-    class Report < BaseModel
+    class Report < BaseModelJSON
 
       attr_accessor :xml
 

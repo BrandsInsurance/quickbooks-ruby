@@ -1,41 +1,6 @@
-# Important: Potential Breaking Changes
-
-On Nov 10, 2022 version 2 was released which no longer supports Ruby 2.5.
-
-
-| quickbooks-ruby | branch     | ruby     |
-|-------------|------------|----------|
-| 1 | master     | <= 2.5 |
-| 2          | 2-stable  | >= 2.6.0 |
-
 # Quickbooks-Ruby
 
-[![Join the chat at https://gitter.im/ruckus/quickbooks-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ruckus/quickbooks-ruby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-![Build Status](https://github.com/ruckus/quickbooks-ruby/actions/workflows/ci.yml/badge.svg)
-
-Integration with Quickbooks Online via the Intuit Data Services v3 REST API.
-
-This library communicates with the Quickbooks Data Services `v3` API, documented at:
-
-[Data Services v3](https://developer.intuit.com/docs/api/accounting)
-
-## Changes in 0.1.x from 0.0.x
-
-`0.1.0` introduced a backwards-incompatible change in how boolean attributes are handled. As of `0.1.0` any boolean like:
-
-`xml_accessor :active?, :from => 'Active'`
-
-will be accessible via `active?`. Thereby eliminating custom code like:
-
-```ruby
-def active?
-  active.to_s == 'true'
-end
-```
-
-Now a call to `active?` that is not set will return `nil`. Otherwise it return `true` / `false`.
-Moreover, there is no longer a getter method e.g. `active` (without the trailing `?`).
+Forked from [ruckus/quickbooks-ruby](https://github.com/ruckus/quickbooks-ruby/tree/master?tab=readme-ov-file)
 
 ## Requirements
 
