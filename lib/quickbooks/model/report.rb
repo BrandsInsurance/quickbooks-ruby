@@ -2,7 +2,27 @@ module Quickbooks
   module Model
     class Report < BaseModelJSON
 
-      attr_accessor :xml
+      attr_accessor :json
+
+      attr_reader :headers
+      attr_reader :columns
+      attr_reader :rows
+
+      def initialize(options = {})
+        self.response = options.dig(:json)
+
+        begin
+          resp = JSON.parse(options[:json]).deep_transform_keys { |key| key.underscore.to_sym }
+
+          @headers = resp.fetch(:header, {})
+          @columns = resp.dig(:columns).fetch(:column, [])
+          @rows = resp.dig(:rows).fetch(:row, [])
+        rescue
+          nil
+        end
+
+        super
+      end
 
       def all_rows
         @all_rows ||= xml.css("ColData:first-child").map {|node| parse_row(node.parent) }

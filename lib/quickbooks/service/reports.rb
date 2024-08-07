@@ -19,7 +19,8 @@ module Quickbooks
 
       def query(object_query = 'BalanceSheet', date_macro = 'This Fiscal Year-to-date', options = {})
         do_http_get(url_for_query(object_query, date_macro, options))
-        model.new(:xml => @last_response_xml)
+
+        model.new(json: @last_response_json)
       end
 
       private
