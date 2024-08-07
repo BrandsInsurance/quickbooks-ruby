@@ -3,7 +3,7 @@ $:.unshift File.expand_path('../lib', __FILE__)
 require 'quickbooks/version'
 
 Gem::Specification.new do |gem|
-  gem.name = 'quickbooks-ruby-2'
+  gem.name = 'quickbooks-ruby'
   gem.version = Quickbooks::VERSION
 
   gem.authors = ['Brands Insurance', 'Cody Caughlan']
