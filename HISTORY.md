@@ -1,4 +1,4 @@
-## 1.1.0 (?)
+## 1.1.0 (2024-08-08)
 
 * Update Reports model and service to use JSON base
 
