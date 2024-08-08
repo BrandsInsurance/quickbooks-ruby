@@ -66,7 +66,7 @@ module Quickbooks
       def zip_rows
         return [] if @rows.nil? || @headers.nil?
 
-        return [] if !@errors.nil? || !@errors.empty?
+        return [] if !@errors.nil? && !@errors.empty?
 
         @zip_rows ||=
           @rows.map.with_index do |row, idx|
@@ -92,7 +92,7 @@ module Quickbooks
       def zip_rows_as_hash(headers: true)
         return [] if @rows.nil? || @headers.nil?
 
-        return [] if !@errors.nil? || !@errors.empty?
+        return [] if !@errors.nil? && !@errors.empty?
 
         @zip_rows_as_hash ||=
           @rows.map.with_index do |row, idx|
