@@ -19,11 +19,15 @@ Gems:
 
 Add this line to your application's Gemfile:
 
-`gem 'quickbooks-ruby', '1.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git'`
+```
+gem 'quickbooks-ruby', '1.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git'
+```
 
 And then execute:
 
-`$ bundle`
+```
+bundle install
+```
 
 ## Sandbox Mode
 
@@ -810,11 +814,13 @@ Vendor Credit     | yes    | yes    | yes   | yes    | yes         |
 * Implement other Line Item types, e.g. `DescriptionLineDetail` for Invoices
 * Full JSON support
 
-## Author
+## Authors
 
-Cody Caughlan
+- Brands Insurance
+- Cody Caughlan
 
 ## Contributors
+
 `quickbooks-ruby` has been a community effort and I am extremely thankful for all the [amazing contributors](https://github.com/ruckus/quickbooks-ruby/network/members).
 
 ## License
@@ -823,4 +829,4 @@ Cody Caughlan
 
 ## Code of Conduct
 
-Everyone interacting in the rails-extensions project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/BrandsInsurance/quickbooks-ruby/blob/updates/CODE_OF_CONDUCT.md).
+Everyone interacting in the rails-extensions project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/BrandsInsurance/quickbooks-ruby/blob/master/CODE_OF_CONDUCT.md).
