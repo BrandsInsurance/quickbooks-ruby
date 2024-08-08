@@ -28,18 +28,28 @@ module Quickbooks
         super
       end
 
+      # @return [Hash, nil]
       def attributes
         @response_attributes
       end
 
+      # @return [Array, nil]
       def attribute_names
-        @response_attributes.keys
+        @response_attributes&.keys
       end
 
+      # @return [String]
       def to_json
         @response_attributes.to_json
       end
 
+      # Parses and formats the row data if no errors.
+      #
+      # @param style [String] Supported options: 'array' & 'hash'
+      #   Defaults to 'array' to keep backwards compatibility.
+      #
+      # @return [Array]
+      #
       def all_rows(style: 'array')
         return [] if @rows.nil? || @headers.nil?
 
@@ -50,8 +60,9 @@ module Quickbooks
         zip_rows_as_hash
       end
 
-      def find_row(label)
-        all_rows.find { |row| row[:col_title] == label }
+      # @deprecated No longer supported with JSON response objects
+      def find_row(_label)
+        raise(NotImplementedError, "`find_row` is no longer supported")
       end
 
       private
@@ -67,6 +78,13 @@ module Quickbooks
         value
       end
 
+      # Merges row columns with the corresponding headers,
+      # assigns indexes for both the row and column,
+      # and will transform column header names to remove `col_`
+      # from the key name.
+      #
+      # @return [Array<Array>]
+      #
       def zip_rows
         @zip_rows ||=
           @rows.map.with_index do |row, idx|
@@ -90,6 +108,13 @@ module Quickbooks
           end
       end
 
+      # Does the same thing as
+      # @see {#zip_rows}
+      # but will convert each row to a hash with the row
+      # index and columns as keys.
+      #
+      # @return [Array<Hash>]
+      #
       def zip_rows_as_hash
         @zip_rows_as_hash ||=
           zip_rows.map.with_index do |row, idx|
