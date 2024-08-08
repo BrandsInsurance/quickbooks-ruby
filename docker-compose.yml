@@ -3,7 +3,7 @@ services:
     build: .
     image: "quickbooks-ruby:${QBR_MAJOR:-0}.${QBR_MINOR:-1}.${QBR_PATCH:-0}"
     volumes:
-      - .:/Gems
+      - .:/quickbooks-ruby
     tty: true
     stdin_open: true
     command: irb
