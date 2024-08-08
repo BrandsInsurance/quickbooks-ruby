@@ -20,9 +20,9 @@ module Quickbooks
           @headers = @response_attributes.fetch(:header, {})
           @columns = @response_attributes.dig(:columns).fetch(:column, [])
           @rows = @response_attributes.dig(:rows).fetch(:row, [])
-          @errors = @response_attributes.dig(:fault).fetch(:error, [])
-        rescue
-          nil
+          @errors = @response_attributes.dig(:fault, :error) || []
+        rescue => e
+          @errors = [{ message: e.message, detail: nil, code: nil, element: nil }]
         end
 
         super
@@ -36,48 +36,25 @@ module Quickbooks
         @response_attributes.keys
       end
 
-      def all_rows
-        @all_rows ||= xml.css("ColData:first-child").map {|node| parse_row(node.parent) }
+      def to_json
+        @response_attributes.to_json
       end
 
-      def columns
-        @columns ||= begin
-          nodes = xml.css('Column')
-          nodes.map do |node|
-            # There is also a ColType field, but it does not seem valuable to capture
-            node.at('ColTitle').content
-          end
-        end
+      def all_rows(style: 'array', headers: true)
+        return zip_rows if style.to_s == 'array'
+
+        zip_rows_as_hash(headers: headers)
       end
 
       def find_row(label)
-        all_rows.find {|r| r[0] == label }
+        all_rows.find { |row| row[:col_title] == label }
       end
 
       private
 
-      # Parses the given row:
-      #   <Row type="Data">
-      #     <ColData value="Checking" id="35"/>
-      #     <ColData value="1201.00"/>
-      #     <ColData value="200.50"/>
-      #   </Row>
-      #
-      #  To:
-      #   ['Checking', BigDecimal(1201.00), BigDecimal(200.50)]
-      def parse_row(row_node)
-        row_node.elements.map.with_index do |el, i|
-          value = el.attr('value')
-
-          next nil if value.blank?
-
-          parse_row_value(value)
-        end
-      end
-
       def parse_row_value(value)
         # does it look like a number?
-        if value =~ /\A\-?[0-9\.]+\Z/
+        if value =~ /\A-?[0-9.]+\Z/
           BigDecimal(value)
         else
           value
@@ -86,6 +63,62 @@ module Quickbooks
         value
       end
 
+      def zip_rows
+        return [] if @rows.nil? || @headers.nil?
+
+        return [] if !@errors.nil? || !@errors.empty?
+
+        @zip_rows ||=
+          @rows.map.with_index do |row, idx|
+            row_data = row.fetch(:col_data, [])
+
+            next nil if row_data.empty?
+
+            row_data.each do |col_data|
+              col_data[:row_index] = idx
+              col_data[:value] = parse_row_value(col_data[:value])
+            end
+
+            @columns.each_with_index do |column, col_idx|
+              next if row_data[col_idx].nil?
+
+              row_data[col_idx].merge!(column)
+            end
+
+            row_data
+          end
+      end
+
+      def zip_rows_as_hash(headers: true)
+        return [] if @rows.nil? || @headers.nil?
+
+        return [] if !@errors.nil? || !@errors.empty?
+
+        @zip_rows_as_hash ||=
+          @rows.map.with_index do |row, idx|
+            row_data = row.fetch(:col_data, [])
+
+            next nil if row_data.empty?
+
+            row_data.each_with_index do |col_data, col_idx|
+              col_data[:index] = col_idx
+              col_data[:value] = parse_row_value(col_data[:value])
+            end
+
+            if headers
+              @columns.each_with_index do |column, col_idx|
+                next if row_data[col_idx].nil?
+
+                row_data[col_idx].merge!(column)
+              end
+            end
+
+            {
+              index: idx,
+              columns: row_data
+            }
+          end
+      end
     end
   end
 end

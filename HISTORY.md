@@ -1,6 +1,6 @@
 ## 1.1.0 (?)
 
-* Update Reports model and server to use JSON base
+* Update Reports model and service to use JSON base
 
 ## 1.0.23 (2024-02-12)
 
