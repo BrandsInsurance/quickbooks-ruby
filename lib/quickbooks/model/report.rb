@@ -40,10 +40,14 @@ module Quickbooks
         @response_attributes.to_json
       end
 
-      def all_rows(style: 'array', headers: true)
+      def all_rows(style: 'array')
+        return [] if @rows.nil? || @headers.nil?
+
+        return [] if !@errors.nil? && !@errors.empty?
+
         return zip_rows if style.to_s == 'array'
 
-        zip_rows_as_hash(headers: headers)
+        zip_rows_as_hash
       end
 
       def find_row(label)
@@ -64,18 +68,15 @@ module Quickbooks
       end
 
       def zip_rows
-        return [] if @rows.nil? || @headers.nil?
-
-        return [] if !@errors.nil? && !@errors.empty?
-
         @zip_rows ||=
           @rows.map.with_index do |row, idx|
-            row_data = row.fetch(:col_data, [])
+            row_data = row.fetch(:col_data, []).dup
 
             next nil if row_data.empty?
 
-            row_data.each do |col_data|
+            row_data.each_with_index do |col_data, col_idx|
               col_data[:row_index] = idx
+              col_data[:index] = col_idx
               col_data[:value] = parse_row_value(col_data[:value])
             end
 
@@ -89,33 +90,12 @@ module Quickbooks
           end
       end
 
-      def zip_rows_as_hash(headers: true)
-        return [] if @rows.nil? || @headers.nil?
-
-        return [] if !@errors.nil? && !@errors.empty?
-
+      def zip_rows_as_hash
         @zip_rows_as_hash ||=
-          @rows.map.with_index do |row, idx|
-            row_data = row.fetch(:col_data, [])
-
-            next nil if row_data.empty?
-
-            row_data.each_with_index do |col_data, col_idx|
-              col_data[:index] = col_idx
-              col_data[:value] = parse_row_value(col_data[:value])
-            end
-
-            if headers
-              @columns.each_with_index do |column, col_idx|
-                next if row_data[col_idx].nil?
-
-                row_data[col_idx].merge!(column)
-              end
-            end
-
+          zip_rows.map.with_index do |row, idx|
             {
               index: idx,
-              columns: row_data
+              columns: row
             }
           end
       end
