@@ -83,7 +83,7 @@ module Quickbooks
             @columns.each_with_index do |column, col_idx|
               next if row_data[col_idx].nil?
 
-              row_data[col_idx].merge!(column)
+              row_data[col_idx].merge!(column.transform_keys { |col_key| col_key.to_s.tr('col_', '').to_sym })
             end
 
             row_data
