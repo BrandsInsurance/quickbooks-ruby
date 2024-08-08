@@ -1,13 +1,24 @@
+# frozen_string_literal: true
+
 module Quickbooks
   module Model
     class Report < BaseModelJSON
 
       attr_accessor :json
 
+      # @return [Array, nil]
       attr_reader :columns
+
+      # @return [Array, nil]
       attr_reader :errors
+
+      # @return [Array, nil]
       attr_reader :headers
+
+      # @return [Hash, nil]
       attr_reader :response_attributes
+
+      # @return [Array, nil]
       attr_reader :rows
 
       def initialize(options = {})
