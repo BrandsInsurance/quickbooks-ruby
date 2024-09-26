@@ -10,38 +10,11 @@ On Nov 10, 2022 version 2 was released which no longer supports Ruby 2.5.
 
 # Quickbooks-Ruby
 
-[![Join the chat at https://gitter.im/ruckus/quickbooks-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ruckus/quickbooks-ruby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-![Build Status](https://github.com/ruckus/quickbooks-ruby/actions/workflows/ci.yml/badge.svg)
-
-Integration with Quickbooks Online via the Intuit Data Services v3 REST API.
-
-This library communicates with the Quickbooks Data Services `v3` API, documented at:
-
-[Data Services v3](https://developer.intuit.com/docs/api/accounting)
-
-## Changes in 0.1.x from 0.0.x
-
-`0.1.0` introduced a backwards-incompatible change in how boolean attributes are handled. As of `0.1.0` any boolean like:
-
-`xml_accessor :active?, :from => 'Active'`
-
-will be accessible via `active?`. Thereby eliminating custom code like:
-
-```ruby
-def active?
-  active.to_s == 'true'
-end
-```
-
-Now a call to `active?` that is not set will return `nil`. Otherwise it return `true` / `false`.
-Moreover, there is no longer a getter method e.g. `active` (without the trailing `?`).
+Forked from [ruckus/quickbooks-ruby](https://github.com/ruckus/quickbooks-ruby/tree/master?tab=readme-ov-file)
 
 ## Requirements
 
-This has been tested on 2.x
-
-Ruby 1.9.x is not supported.
+ruby 2.5.3+
 
 ## Dependencies
 
@@ -56,18 +29,19 @@ Gems:
 
 Add this line to your application's Gemfile:
 
-`gem 'quickbooks-ruby'`
+```
+gem 'quickbooks-ruby', '1.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git'
+```
 
 And then execute:
 
-`$ bundle`
-
-Or install it yourself as:
-
-`$ gem install quickbooks-ruby`
+```
+bundle install
+```
 
 ## Sandbox Mode
-An API app provides two sets of OAuth key for production and development. Since October 22, 2014, only [Sandbox Companies](https://developer.intuit.com/docs/api/accounting)
+
+An API app provides two sets of OAuth key for production and development. Since October 22, 2014, only [Sandbox Companies](https://developer.intuit.com/app/developer/sandbox)
 are allowed to connected to the QBO via the development key. The end-point for sandbox mode is https://sandbox-quickbooks.api.intuit.com.
 
 By default, the gem runs in production mode. If you prefer to develop / test the integration with the development key,
@@ -746,8 +720,9 @@ see: https://developer.intuit.com/docs/0100_quickbooks_online/0200_dev_guides/ac
 
 ## Reports API
 
-Quickbooks has an API called the [Reports API](https://developer.intuit.com/docs/0100_accounting/0400_references/reports) that provides abilities such as: business and sales overview; vendor and customer balances; review expenses and purchases and more.
-See the [specs](https://github.com/ruckus/quickbooks-ruby/blob/master/spec/lib/quickbooks/model/report_spec.rb) for [examples](https://github.com/ruckus/quickbooks-ruby/blob/master/spec/lib/quickbooks/service/reports_spec.rb) of how to leverage.
+__This is now JSON supported__
+
+Quickbooks has an API called the [Reports API](https://developer.intuit.com/app/developer/qbo/docs/api/accounting/report-entities/accountlistdetail#query-a-report) that provides abilities such as: business and sales overview; vendor and customer balances; review expenses and purchases and more.
 
 ## JSON support
 
@@ -849,21 +824,19 @@ Vendor Credit     | yes    | yes    | yes   | yes    | yes         |
 * Implement other Line Item types, e.g. `DescriptionLineDetail` for Invoices
 * Full JSON support
 
-## Author
+## Authors
 
-Cody Caughlan
+- Brands Insurance
+- Cody Caughlan
 
 ## Contributors
+
 `quickbooks-ruby` has been a community effort and I am extremely thankful for all the [amazing contributors](https://github.com/ruckus/quickbooks-ruby/network/members).
 
 ## License
 
-The MIT License
+[The MIT License (MIT)](https://github.com/BrandsInsurance/quickbooks-ruby/blob/master/LICENSE.txt)
 
-Copyright (c) 2013
+## Code of Conduct
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Everyone interacting in the rails-extensions project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/BrandsInsurance/quickbooks-ruby/blob/master/CODE_OF_CONDUCT.md).
