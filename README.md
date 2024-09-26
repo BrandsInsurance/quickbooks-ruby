@@ -14,7 +14,7 @@ Forked from [ruckus/quickbooks-ruby](https://github.com/ruckus/quickbooks-ruby/t
 
 ## Requirements
 
-ruby 2.5.3+
+ruby 2.6.0+
 
 ## Dependencies
 
@@ -30,7 +30,7 @@ Gems:
 Add this line to your application's Gemfile:
 
 ```
-gem 'quickbooks-ruby', '1.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git'
+gem 'quickbooks-ruby', '2.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git'
 ```
 
 And then execute:
