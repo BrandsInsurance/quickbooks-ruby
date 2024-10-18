@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.email = ['noreply@wcpermit.com']
   gem.homepage = 'https://github.com/BrandsInsurance/quickbooks-ruby/tree/2-stable'
   gem.license = 'MIT'
-  gem.required_ruby_version = '>= 3.1.6', '< 4'
+  gem.required_ruby_version = '>= 3.1.6', '< 3.5.0'
 
   gem.metadata['bug_tracker_uri'] = 'https://github.com/BrandsInsurance/quickbooks-ruby/issues'
   gem.metadata['changelog_uri'] = 'https://github.com/BrandsInsurance/quickbooks-ruby/blob/2-stable/HISTORY.md'
