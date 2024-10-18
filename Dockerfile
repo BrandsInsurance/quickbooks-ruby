@@ -1,4 +1,4 @@
-FROM ruby:2.5.3
+FROM ruby:3.1.6
 
 ENV APP_PATH="quickbooks-ruby"
 WORKDIR /$APP_PATH
@@ -8,7 +8,7 @@ COPY . /$APP_PATH
 ENV LOCK_PATH="Locks"
 RUN mkdir -p /$LOCK_PATH
 
-ENV BUNDLER_VERSION=1.17.3
+ENV BUNDLER_VERSION=2.5.15
 RUN gem install bundler -v $BUNDLER_VERSION
 RUN bundle install
 RUN mv Gemfile.lock /$LOCK_PATH/
