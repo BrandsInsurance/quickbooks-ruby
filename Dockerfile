@@ -10,7 +10,7 @@ RUN mkdir -p /$LOCK_PATH
 
 ENV BUNDLER_VERSION=2.5.15
 RUN gem install bundler -v $BUNDLER_VERSION
-RUN bundle install
+RUN bundle update
 RUN mv Gemfile.lock /$LOCK_PATH/
 
 RUN cp /$APP_PATH/entrypoint.sh /usr/bin/

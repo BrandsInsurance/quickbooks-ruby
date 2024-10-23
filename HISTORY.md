@@ -6,6 +6,11 @@
   * `Quickbooks::Model::Report#find_row` is no longer supported with the switch to JSON base
 * Ruby requirement has been bumped to >= `3.1.6`
 
+### Dependencies
+
+* `faraday@1.10.4`
+* `faraday-gzip@2.0.1`
+
 ## 2.0.5 (2024-07-25)
 
 * Added BCC field to Bill Model. Integrated the PR manually. https://github.com/ruckus/quickbooks-ruby/pull/614 Thanks @hammad-Ikhlaq-7vals
