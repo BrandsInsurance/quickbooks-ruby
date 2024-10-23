@@ -11,3 +11,8 @@ Gemfile.lock
 .env
 webapp/
 .DS_Store
+
+.irbrc
+.irb_history
+
+rubygems_credentials

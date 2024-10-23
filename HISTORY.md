@@ -1,3 +1,16 @@
+## 2.1.0 (Unreleased)
+
+### Breaking changes
+
+* Backported `1.1.0`, which has switched the reports model to a JSON base
+  * `Quickbooks::Model::Report#find_row` is no longer supported with the switch to JSON base
+* Ruby requirement has been bumped to >= `3.1.6`
+
+### Dependencies
+
+* `faraday@1.10.4`
+* `faraday-gzip@2.0.1`
+
 ## 2.0.5 (2024-07-25)
 
 * Added BCC field to Bill Model. Integrated the PR manually. https://github.com/ruckus/quickbooks-ruby/pull/614 Thanks @hammad-Ikhlaq-7vals
@@ -30,6 +43,21 @@ First release of 2.0+ branch:
 * Replace custom Faraday GZip implementation with `faraday-gzip` gem
 * Relax gemspec to allow OAuth2 v2.x gem
 * No longer support Ruby 2.5
+
+## 1.1.0 (2024-08-08)
+
+* Update Reports model and service to use JSON base
+
+## 1.0.23 (2024-02-12)
+
+Use Ruby try() to gracefully handle no method errors when parsing exceptions
+
+## 1.0.22 (2023-07-12)
+
+* Fintechqb 1967 enable service level logging (#600). Thanks @andymond
+* Add total_tax_specified xml_accessor to TransactionTaxDetail
+
+In a recent update to the QBO API, if a company that uses automated sales tax has an invoice that has no tax amount, we need to specify TotalTaxSpecified = false. Not passing this results in an error from QBO indicating that sales tax was miscalculated.
 
 ## 1.0.21 (2022-04-26)
 

@@ -1,0 +1,9 @@
+services:
+  gems:
+    build: .
+    image: "quickbooks-ruby:${QBR_MAJOR:-0}.${QBR_MINOR:-1}.${QBR_PATCH:-0}"
+    volumes:
+      - .:/quickbooks-ruby
+    tty: true
+    stdin_open: true
+    command: irb
