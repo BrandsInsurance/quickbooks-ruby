@@ -3,6 +3,8 @@
 * Set default minor version to 75
   * You can override the minor version by setting `Quickbooks.minorversion = XX` (where `XX` in the minor version like `47`)
 
+* Add `fetch_by_id` to `Account`
+
 ## 2.1.0 (2025-01-22)
 
 ### Breaking changes
