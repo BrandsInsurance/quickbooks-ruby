@@ -5,9 +5,10 @@ on:
       - opened
       - reopened
       - synchronize
+      - ready_for_review
     branches-ignore:
-      - production
-      - staging
+      - master
+      - 2-stable
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
