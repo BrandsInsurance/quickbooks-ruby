@@ -1,0 +1,22 @@
+name: Approve PRs
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches-ignore:
+      - production
+      - staging
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    if: (!github.event.pull_request.draft)
+    permissions:
+      pull-requests: write
+    steps:
+      - name: 'Auto approve'
+        uses: BrandsInsurance/auto-approve-prs@v1.0.0
+        with:
+          actor: thestelz
+          label: auto-approve
