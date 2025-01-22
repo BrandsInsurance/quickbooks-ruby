@@ -16,7 +16,5 @@ jobs:
       pull-requests: write
     steps:
       - name: 'Auto approve'
-        uses: BrandsInsurance/auto-approve-prs@v1.0.0
-        with:
-          actor: thestelz
-          label: auto-approve
+        uses: hmarr/auto-approve-action@v3
+        if: github.actor == 'thestelz' && contains(github.event.pull_request.labels.*.name, 'auto-approve')
