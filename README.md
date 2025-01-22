@@ -30,13 +30,27 @@ Gems:
 Add this line to your application's Gemfile:
 
 ```
-gem 'quickbooks-ruby', '2.1.0-beta.3', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git', tag: 'v2.1.0-beta.3'
+gem 'quickbooks-ruby', '2.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git', tag: 'v2.1.0'
 ```
 
 And then execute:
 
 ```
 bundle install
+```
+
+## Minor Version
+
+By default, the minor version of all request from `v2.2.0` on will be set to `75` ([reason](https://blogs.intuit.com/2025/01/21/changes-to-our-accounting-api-that-may-impact-your-application/)).
+
+You can override / manually set this by doing the following:
+
+```ruby
+# XX will be the version number you want to use
+Quickbooks.minorversion = XX
+
+# Example
+Quickbooks.minorversion = 55
 ```
 
 ## Sandbox Mode
