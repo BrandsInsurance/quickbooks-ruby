@@ -6,9 +6,6 @@ on:
       - reopened
       - synchronize
       - ready_for_review
-    branches-ignore:
-      - master
-      - 2-stable
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
