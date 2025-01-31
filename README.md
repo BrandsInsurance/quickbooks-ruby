@@ -30,7 +30,7 @@ Gems:
 Add this line to your application's Gemfile:
 
 ```
-gem 'quickbooks-ruby', '2.1.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git', tag: 'v2.1.0'
+gem 'quickbooks-ruby', '2.2.0', git: 'https://github.com/BrandsInsurance/quickbooks-ruby.git', tag: 'v2.2.0'
 ```
 
 And then execute:
