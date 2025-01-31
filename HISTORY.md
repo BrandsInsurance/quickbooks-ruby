@@ -1,4 +1,4 @@
-## 2.2.0 (unreleased)
+## 2.2.0 (2025-01-31)
 
 * Set default minor version to 75
   * You can override the minor version by setting `Quickbooks.minorversion = XX` (where `XX` in the minor version like `47`)
