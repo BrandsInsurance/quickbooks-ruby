@@ -5,6 +5,10 @@ module Quickbooks
     class Card < BaseModelJSON
       REST_RESOURCE = 'cards'
 
+      attr_reader :raw_json_response
+
+      attr_accessor :results
+
       xml_accessor(:id, from: 'Id')
       xml_accessor(:number, from: 'Number')
       xml_accessor(:exp_month, from: 'ExpMonth')
@@ -21,6 +25,16 @@ module Quickbooks
       xml_accessor(:created, from: 'Created', as: DateTime)
       xml_accessor(:entity_type, from: 'EntityType')
       xml_accessor(:entity_id, from: 'EntityId')
+
+      def initialize(options = {})
+        @raw_json_response = options.delete(:json)
+
+        if @raw_json_response&.plain_body.present?
+          @results = JSON.parse(@raw_json_response.plain_body).deep_transform_keys { |key| key.underscore.to_sym }
+        end
+
+        super()
+      end
     end
   end
 end
