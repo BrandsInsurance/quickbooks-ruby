@@ -20,13 +20,16 @@ module Quickbooks
       HTTP_ACCEPT_ENCODING = 'gzip, deflate'
       BASE_DOMAIN = 'quickbooks.api.intuit.com'
       SANDBOX_DOMAIN = 'sandbox-quickbooks.api.intuit.com'
+      BASE_PAYMENT_DOMAIN = 'api.intuit.com'
+      SANDBOX_PAYMENT_DOMAIN = 'sandbox.api.intuit.com'
 
       RequestInfo = Struct.new(:url, :headers, :body, :method)
 
       def initialize(attributes = {})
         domain = Quickbooks.sandbox_mode ? SANDBOX_DOMAIN : BASE_DOMAIN
         @base_uri = "https://#{domain}/v3/company"
-        @payment_base_uri = "https://#{domain}/quickbooks/v4"
+        payment_domain = Quickbooks.sandbox_mode ? SANDBOX_PAYMENT_DOMAIN : BASE_PAYMENT_DOMAIN
+        @payment_base_uri = "https://#{payment_domain}/quickbooks/v4"
         attributes.each {|key, value| public_send("#{key}=", value) }
       end
 
