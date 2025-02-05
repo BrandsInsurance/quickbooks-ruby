@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Quickbooks
-  VERSION = '2.3.0-beta.4'
+  VERSION = '2.3.0-beta.5'
 end
