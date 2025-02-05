@@ -15,7 +15,7 @@ module Quickbooks
       xml_accessor(:name, from: 'Name')
       xml_accessor(:default?, from: 'Default')
       xml_accessor(:commercial_card_code, from: 'CommercialCardCode')
-      xml_accessor(:address, from: 'Address', as: PhysicalAddress)
+      xml_accessor(:address, from: 'Address', as: Quickbooks::Model::PhysicalAddress)
       xml_accessor(:is_business?, from: 'IsBusiness')
       xml_accessor(:is_level3_eligible?, from: 'IsLevel3Eligible')
       xml_accessor(:created, from: 'Created', as: DateTime)
