@@ -66,6 +66,12 @@ module Quickbooks
         "#{url_for_base}/#{resource}"
       end
 
+      # Returns url for given resource
+      #
+      # @param resource [String]
+      #
+      # @return [String]
+      #
       def url_for_payment_resource(resource)
         "#{url_for_payment_base}/#{resource}"
       end
@@ -75,6 +81,7 @@ module Quickbooks
         "#{@base_uri}/#{@company_id}"
       end
 
+      # @return [String] Base payment url
       def url_for_payment_base
         @payment_base_uri.to_s
       end
