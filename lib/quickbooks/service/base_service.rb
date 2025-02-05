@@ -112,14 +112,18 @@ module Quickbooks
         end
       end
 
-      def fetch_collection(query, model, options = {})
+      def fetch_collection(query, model, options = {}, params = {}, headers = {})
         page = options.fetch(:page, 1)
         per_page = options.fetch(:per_page, 20)
 
         start_position = ((page - 1) * per_page) + 1 # page=2, per_page=10 then we want to start at 11
         max_results = per_page
 
-        response = do_http_get(url_for_query(query, start_position, max_results, options.except(:page, :per_page)))
+        response = do_http_get(
+          url_for_query(query, start_position, max_results, options.except(:page, :per_page)),
+          params,
+          headers
+        )
 
         parse_collection(response, model)
       end

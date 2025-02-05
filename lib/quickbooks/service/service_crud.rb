@@ -2,8 +2,8 @@ module Quickbooks
   module Service
     module ServiceCrud
 
-      def query(object_query = nil, options = {})
-        fetch_collection(object_query, model, options)
+      def query(object_query = nil, options = {}, params = {}, headers = {})
+        fetch_collection(object_query, model, options, params, headers)
       end
 
       # fetch all records, returns an array of models
