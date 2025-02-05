@@ -30,7 +30,9 @@ module Quickbooks
         @raw_json_response = options.delete(:json)
 
         if @raw_json_response&.plain_body.present?
-          @results = JSON.parse(@raw_json_response.plain_body).deep_transform_keys { |key| key.underscore.to_sym }
+          @results = JSON.parse(@raw_json_response.plain_body).map do |card|
+            card.deep_transform_keys { |key| key.underscore.to_sym }
+          end
         end
 
         super()
