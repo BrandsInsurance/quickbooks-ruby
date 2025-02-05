@@ -11,7 +11,7 @@ module Quickbooks
       #   fetch_collection(object_query, model, options, params, headers)
       # end
       def query(customer_id, request_id = nil)
-        url = url_for_resource(model::REST_RESOURCE)
+        url = "#{url_for_payment_base}/customer/#{customer_id}/cards"
         response = do_http_get(url, {}, { 'request-Id' => request_id || generate_uniq_request_id })
 
         return unless response&.code.to_i == 200

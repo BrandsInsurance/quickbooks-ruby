@@ -12,6 +12,7 @@ module Quickbooks
       attr_accessor :before_request
       attr_accessor :around_request
       attr_accessor :after_request
+      attr_reader :payment_base_uri
 
       XML_NS = %{xmlns="http://schema.intuit.com/finance/v3"}
       HTTP_CONTENT_TYPE = 'application/xml'
@@ -25,6 +26,7 @@ module Quickbooks
       def initialize(attributes = {})
         domain = Quickbooks.sandbox_mode ? SANDBOX_DOMAIN : BASE_DOMAIN
         @base_uri = "https://#{domain}/v3/company"
+        @payment_base_uri = "https://#{domain}/quickbooks/v4"
         attributes.each {|key, value| public_send("#{key}=", value) }
       end
 
@@ -61,9 +63,17 @@ module Quickbooks
         "#{url_for_base}/#{resource}"
       end
 
+      def url_for_payment_resource(resource)
+        "#{url_for_payment_base}/#{resource}"
+      end
+
       def url_for_base
         raise MissingRealmError.new unless @company_id
         "#{@base_uri}/#{@company_id}"
+      end
+
+      def url_for_payment_base
+        @payment_base_uri.to_s
       end
 
       def is_json?
