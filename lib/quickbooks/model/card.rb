@@ -5,17 +5,17 @@ module Quickbooks
     class Card < BaseModelJSON
       REST_RESOURCE = 'cards'
 
-      KEY_MAPPINGS = {
-        address: 'Address',
-        cvc_verification: 'CvcVerification',
-        zero_dollar_verification: 'ZeroDollarVerification'
-      }.freeze
-
       Address = Struct.new(:street_address, :city, :postal_code, :region, :country, keyword_init: true)
 
       CvcVerification = Struct.new(:result, :date, keyword_init: true)
 
       ZeroDollarVerification = Struct.new(:status, keyword_init: true)
+
+      KEY_MAPPINGS = {
+        address: 'Quickbooks::Model::Card::Address',
+        cvc_verification: 'Quickbooks::Model::Card::CvcVerification',
+        zero_dollar_verification: 'Quickbooks::Model::Card::ZeroDollarVerification'
+      }.freeze
 
       # @return [String] Card ID
       attr_accessor :id
