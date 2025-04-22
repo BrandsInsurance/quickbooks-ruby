@@ -30,7 +30,7 @@ module Quickbooks
       attr_accessor :address
 
       # @return [DateTime] When the card was created
-      attr_accessor :created_at
+      attr_accessor :created
 
       # @return [DateTime] When the card was lasted updated
       attr_accessor :updated
