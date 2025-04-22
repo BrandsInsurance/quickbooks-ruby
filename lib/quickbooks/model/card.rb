@@ -11,7 +11,7 @@ module Quickbooks
 
       ZeroDollarVerification = Struct.new(:status, keyword_init: true)
 
-      KEY_MAPPINGS = {
+      KEY_CLASS_MAPPINGS = {
         address: 'Quickbooks::Model::Card::Address',
         cvc_verification: 'Quickbooks::Model::Card::CvcVerification',
         zero_dollar_verification: 'Quickbooks::Model::Card::ZeroDollarVerification'
@@ -66,7 +66,7 @@ module Quickbooks
       attr_accessor :exp_year
 
       # @return [Boolean] If the card is set as the default
-      attr_accessor :is_default
+      attr_accessor :default
 
       # @return [Boolean] If the card is marked as business only
       attr_accessor :is_business
@@ -117,11 +117,13 @@ module Quickbooks
         #
         def init_map_fields(options)
           options.each do |key, value|
-            if KEY_MAPPINGS.has_key?(key)
-              public_send("#{key}=", KEY_MAPPINGS[key].constantize.new(**value))
+            if KEY_CLASS_MAPPINGS.has_key?(key)
+              public_send("#{key}=", KEY_CLASS_MAPPINGS[key].constantize.new(**value))
 
               next
             end
+
+            next unless respond_to?(key)
 
             public_send("#{key}=", value)
           end
