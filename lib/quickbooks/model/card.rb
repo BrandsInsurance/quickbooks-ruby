@@ -161,6 +161,11 @@ module Quickbooks
         "#<#{self.class} #{attrs.join(', ')}>"
       end
 
+      # @return [JSON]
+      def to_json
+        attributes.to_json
+      end
+
       private
 
         # Sets the initial values
