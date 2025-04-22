@@ -161,9 +161,24 @@ module Quickbooks
         "#<#{self.class} #{attrs.join(', ')}>"
       end
 
-      # @return [JSON]
+      # @return [String]
       def to_json
-        attributes.to_json
+        params = {}
+
+        attributes.each_pair do |key, value|
+          next if value.blank?
+
+          params[key.camelize(:lower)] =
+            if value.is_a?(Array)
+              value.inject([]) { |mem, item| mem << item.to_json; mem }
+            elsif value.is_a?(Hash)
+              value.deep_transform_keys { |vk| vk.camelize(:lower) }
+            else
+              value
+            end
+        end
+
+        params.to_json
       end
 
       private
