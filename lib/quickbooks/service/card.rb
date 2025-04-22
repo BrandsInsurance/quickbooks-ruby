@@ -42,18 +42,27 @@ module Quickbooks
 
       # Creates a card under a customer
       #
-      # @param customer_id [String, Numeric] Customer ID
-      # @param attributes [Hash] Card attributes
-      # @param request_id [String] Uniq request id
+      # @overload create(customer_id, attributes = {}, request_id = nil)
+      #   @param customer_id [String, Numeric] Customer ID
+      #   @param attributes [Hash] Card attributes
+      #   @param request_id [String] Uniq request id
+      #
+      # @overload create(card, request_id = nil)
+      #   @param card [Quickbooks::Model::Card]
+      #   @param request_id [String] Uniq request id
       #
       # @return [Hash, nil, Quickbooks::Model::Card]
       #
       def create(customer_id, attributes = {}, request_id = nil)
-        url = "#{url_for_payment_base}/customers/#{customer_id}/#{model::REST_RESOURCE}"
+        entity_id, req_attrs, req_id =
+          if customer_id.is_a?(model)
+            [customer_id.id, customer_id.to_json, attributes]
+          else
+            [customer_id, model.new(attributes).to_json, request_id]
+          end
 
-        response = do_http_post(url, model.new(attributes).to_json, {
-          'request-Id' => request_id || generate_uniq_request_id
-        })
+        url = "#{url_for_payment_base}/customers/#{entity_id}/#{model::REST_RESOURCE}"
+        response = do_http_post(url, req_attrs, {}, { 'request-Id' => req_id || generate_uniq_request_id })
 
         return parse_intuit_error if response_is_error?
 
