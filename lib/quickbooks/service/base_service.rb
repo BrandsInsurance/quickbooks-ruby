@@ -227,6 +227,11 @@ module Quickbooks
         do_http(:get, url, {}, headers)
       end
 
+      def do_http_delete(url, params = {}, headers = {})
+        url = add_query_string_to_url(url, params)
+        do_http(:delete, url, {}, headers)
+      end
+
       def do_http_raw_get(url, params = {}, headers = {})
         url = add_query_string_to_url(url, params)
         unless headers.has_key?('Content-Type')
@@ -288,6 +293,8 @@ module Quickbooks
             oauth_post(url, body, headers)
           when :upload
             oauth_post_with_multipart(url, body, headers)
+          when :delete
+            oauth_delete(url, body, headers)
           else
             raise "Do not know how to perform that HTTP operation"
           end
@@ -311,6 +318,10 @@ module Quickbooks
 
       def oauth_post_with_multipart(url, body, headers)
         @oauth.post_with_multipart(url, headers: headers, body: body, raise_errors: false)
+      end
+
+      def oauth_delete(url, body, headers)
+        @oauth.delete(url, headers: headers, body: body, raise_errors: false)
       end
 
       def add_query_string_to_url(url, params = {})

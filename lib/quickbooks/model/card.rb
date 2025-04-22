@@ -17,7 +17,7 @@ module Quickbooks
         zero_dollar_verification: 'Quickbooks::Model::Card::ZeroDollarVerification'
       }.freeze
 
-      # @return [String] Card ID
+      # @return [String] Card ID or entity ID on creation
       attr_accessor :id
 
       # @return [String] Redacted card number (last 4 with leading "x"'s)
@@ -47,7 +47,7 @@ module Quickbooks
       # @return [Integer] ID of the base entity (not the card)
       attr_accessor :entity_id
 
-      # @return [String] Type of entity ('customers', 'vendors', etc.)
+      # @return [String] Type of entity ('customers')
       attr_accessor :entity_type
 
       # @return [String] SHA512 number field
@@ -73,6 +73,12 @@ module Quickbooks
 
       # @return [Boolean] Card falls into the L3 eligible Bank Identification Number (BIN) range
       attr_accessor :is_level3_eligible
+
+      # @return [String] Will only be present on card creation
+      attr_accessor :cvc
+
+      # @return [String] A code that indicates if the card is a commercial or corporate card
+      attr_accessor :commercial_card_code
 
       delegate :[], to: :attributes
       delegate :fetch, to: :attributes
@@ -131,7 +137,8 @@ module Quickbooks
           exp_year: exp_year,
           default: default,
           is_business: is_business,
-          is_level3_eligible: is_level3_eligible
+          is_level3_eligible: is_level3_eligible,
+          commercial_card_code: commercial_card_code
         })
       end
 
