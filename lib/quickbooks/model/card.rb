@@ -118,12 +118,12 @@ module Quickbooks
         def init_map_fields(options)
           options.each do |key, value|
             if KEY_MAPPINGS.has_key?(key)
-              public_send("@#{key}=", KEY_MAPPINGS[key].constantize.new(**value))
+              public_send("#{key}=", KEY_MAPPINGS[key].constantize.new(**value))
 
               next
             end
 
-            public_send("@#{key}=", value)
+            public_send("#{key}=", value)
           end
         end
     end
