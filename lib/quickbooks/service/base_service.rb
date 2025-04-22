@@ -12,6 +12,7 @@ module Quickbooks
       attr_accessor :before_request
       attr_accessor :around_request
       attr_accessor :after_request
+      attr_reader :payment_base_uri
 
       XML_NS = %{xmlns="http://schema.intuit.com/finance/v3"}
       HTTP_CONTENT_TYPE = 'application/xml'
@@ -19,12 +20,16 @@ module Quickbooks
       HTTP_ACCEPT_ENCODING = 'gzip, deflate'
       BASE_DOMAIN = 'quickbooks.api.intuit.com'
       SANDBOX_DOMAIN = 'sandbox-quickbooks.api.intuit.com'
+      BASE_PAYMENT_DOMAIN = 'api.intuit.com'
+      SANDBOX_PAYMENT_DOMAIN = 'sandbox.api.intuit.com'
 
       RequestInfo = Struct.new(:url, :headers, :body, :method)
 
       def initialize(attributes = {})
         domain = Quickbooks.sandbox_mode ? SANDBOX_DOMAIN : BASE_DOMAIN
         @base_uri = "https://#{domain}/v3/company"
+        payment_domain = Quickbooks.sandbox_mode ? SANDBOX_PAYMENT_DOMAIN : BASE_PAYMENT_DOMAIN
+        @payment_base_uri = "https://#{payment_domain}/quickbooks/v4"
         attributes.each {|key, value| public_send("#{key}=", value) }
       end
 
@@ -61,9 +66,24 @@ module Quickbooks
         "#{url_for_base}/#{resource}"
       end
 
+      # Returns url for given resource
+      #
+      # @param resource [String]
+      #
+      # @return [String]
+      #
+      def url_for_payment_resource(resource)
+        "#{url_for_payment_base}/#{resource}"
+      end
+
       def url_for_base
         raise MissingRealmError.new unless @company_id
         "#{@base_uri}/#{@company_id}"
+      end
+
+      # @return [String] Base payment url
+      def url_for_payment_base
+        @payment_base_uri.to_s
       end
 
       def is_json?
@@ -112,14 +132,18 @@ module Quickbooks
         end
       end
 
-      def fetch_collection(query, model, options = {})
+      def fetch_collection(query, model, options = {}, params = {}, headers = {})
         page = options.fetch(:page, 1)
         per_page = options.fetch(:per_page, 20)
 
         start_position = ((page - 1) * per_page) + 1 # page=2, per_page=10 then we want to start at 11
         max_results = per_page
 
-        response = do_http_get(url_for_query(query, start_position, max_results, options.except(:page, :per_page)))
+        response = do_http_get(
+          url_for_query(query, start_position, max_results, options.except(:page, :per_page)),
+          params,
+          headers
+        )
 
         parse_collection(response, model)
       end
@@ -203,6 +227,11 @@ module Quickbooks
         do_http(:get, url, {}, headers)
       end
 
+      def do_http_delete(url, params = {}, headers = {})
+        url = add_query_string_to_url(url, params)
+        do_http(:delete, url, {}, headers)
+      end
+
       def do_http_raw_get(url, params = {}, headers = {})
         url = add_query_string_to_url(url, params)
         unless headers.has_key?('Content-Type')
@@ -264,6 +293,8 @@ module Quickbooks
             oauth_post(url, body, headers)
           when :upload
             oauth_post_with_multipart(url, body, headers)
+          when :delete
+            oauth_delete(url, body, headers)
           else
             raise "Do not know how to perform that HTTP operation"
           end
@@ -287,6 +318,10 @@ module Quickbooks
 
       def oauth_post_with_multipart(url, body, headers)
         @oauth.post_with_multipart(url, headers: headers, body: body, raise_errors: false)
+      end
+
+      def oauth_delete(url, body, headers)
+        @oauth.delete(url, headers: headers, body: body, raise_errors: false)
       end
 
       def add_query_string_to_url(url, params = {})
