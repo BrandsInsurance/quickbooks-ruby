@@ -74,8 +74,13 @@ module Quickbooks
       # @return [Boolean] Card falls into the L3 eligible Bank Identification Number (BIN) range
       attr_accessor :is_level3_eligible
 
-      # @return [Hash] Initial options
-      attr_accessor :options
+      delegate :[], to: :attributes
+      delegate :fetch, to: :attributes
+      delegate :dig, to: :attributes
+
+      validates :number, presence: true
+      validates :exp_month, presence: true
+      validates :exp_year, presence: true
 
       class << self
         # Parse the json response
@@ -99,24 +104,66 @@ module Quickbooks
         end
       end
 
-      def initialize(options = {})
-        @options = options || {}
-
-        init_map_fields(@options)
+      def initialize(attributes = {})
+        init_map_fields(attributes)
 
         super()
+      end
+
+      # @return [HashWithIndifferentAccess]
+      def attributes
+        HashWithIndifferentAccess.new({
+          id: id,
+          number: number,
+          name: name,
+          address: address.to_h,
+          created: created,
+          updated: updated,
+          entity_version: entity_version,
+          cvc_verification: cvc_verification.to_h,
+          card_type: card_type,
+          entity_id: entity_id,
+          entity_type: entity_type,
+          number_sha512: number_sha512,
+          status: status,
+          zero_dollar_verification: zero_dollar_verification.to_h,
+          exp_month: exp_month,
+          exp_year: exp_year,
+          default: default,
+          is_business: is_business,
+          is_level3_eligible: is_level3_eligible
+        })
+      end
+
+      # @return [String]
+      def inspect
+        attrs =
+          attributes.map do |key, value|
+            val =
+              if value.nil?
+                'nil'
+              elsif KEY_CLASS_MAPPINGS.has_key?(key)
+                value.to_h.to_s
+              else
+                value.to_s
+              end
+
+            "#{key}: #{val}"
+          end
+
+        "#<#{self.class} #{attrs.join(', ')}>"
       end
 
       private
 
         # Sets the initial values
         #
-        # @param options [Hash]
+        # @param attributes [Hash]
         #
         # @return [void]
         #
-        def init_map_fields(options)
-          options.each do |key, value|
+        def init_map_fields(attributes)
+          attributes.each do |key, value|
             if KEY_CLASS_MAPPINGS.has_key?(key)
               public_send("#{key}=", KEY_CLASS_MAPPINGS[key].constantize.new(**value))
 

@@ -10,7 +10,7 @@ module Quickbooks
       #
       # @return [nil, Array<Quickbooks::Model::Card>, Hash]
       #
-      def list(customer_id, request_id = nil)
+      def all(customer_id, request_id = nil)
         url = "#{url_for_payment_base}/customers/#{customer_id}/#{model::REST_RESOURCE}"
         response = do_http_get(url, {}, { 'request-Id' => request_id || generate_uniq_request_id })
 
@@ -21,7 +21,7 @@ module Quickbooks
         model.from_json(response)
       end
 
-      # Finds a specific card
+      # Finds a specific card for a customer
       #
       # @param customer_id [Numeric, String]
       # @param card_id [Numeric, String]
@@ -29,7 +29,7 @@ module Quickbooks
       #
       # @return [nil, Quickbooks::Model::Card, Hash]
       #
-      def find_by_id(customer_id, card_id, request_id = nil)
+      def fetch_by_id(customer_id, card_id, request_id = nil)
         url = "#{url_for_payment_base}/customers/#{customer_id}/#{model::REST_RESOURCE}/#{card_id}"
         response = do_http_get(url, {}, { 'request-Id' => request_id || generate_uniq_request_id })
 
