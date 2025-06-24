@@ -1,3 +1,11 @@
+## 2.3.0 (2025-06-24)
+
+* Syncing with fork
+  * ruckus/quickbooks-ruby#626
+  * ruckus/quickbooks-ruby#617
+  * ruckus/quickbooks-ruby#616
+  * ruckus/quickbooks-ruby#625
+
 ## 2.2.0 (2025-01-31)
 
 * Set default minor version to 75
